@@ -76,7 +76,7 @@ class LedController {
       float x = (time - lastTime) * 2.0 / cycle; //sin波出力用のx軸
       int8_t rgb[3];
       for (int i = 0; i < 3; i++)
-        rgb[i] = maxPower * (sin(fmod(x - i * 2 / 3.0, 2) * PI) + 1) / 2;
+        rgb[i] = maxPower * (sin((x - i * 2 / 3.0) * PI) + 1) / 2;
       for (int i = 0; i < ledNum; i++)
         pixel->setPixelColor(i, rgb[0], rgb[1], rgb[2]);
       pixel->show();
