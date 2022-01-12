@@ -11,7 +11,6 @@ LedController led(13, 100, 1000, 50, 30);
 int8_t buf[DATA_SIZE];
 
 void setup() {
-  pinMode(4, INPUT_PULLUP);
   delay(100);
   Wire.begin(I2C_ADDRESS);
   Wire.onReceive(receiveEvent);
