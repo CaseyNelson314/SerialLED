@@ -26,7 +26,7 @@
           
         for (int i = 0; i < ledNum / ledGroups; i++)
           pixel->setPixelColor(j + ledGroups * i, rgb[0], rgb[1], rgb[2]);
-          |データセット
+          |データセット        |色相のまとまりごとにセット
       }
       
       pixel->show();
