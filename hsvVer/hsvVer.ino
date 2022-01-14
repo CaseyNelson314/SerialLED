@@ -17,7 +17,7 @@ void setup() {
 
 void loop() {
   led.showFlowing(1000, 0x9999ff, 2);
-  led.processingTime("\n");
+  led.processingus("\n");
 }
 
 void receiveEvent() {
