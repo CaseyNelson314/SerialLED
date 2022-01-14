@@ -78,7 +78,7 @@ uint32_t LedController::hsv(byte h, byte s) {
 
 void LedController::showRainbow(int cycle, int ledGroups, bool direction = 1, byte saturation = 180) {
   /*error*/
-  if (!ledGroups)return;                                                //除算に使うので0をはじく
+  if (ledGroups == 0)return;                                                //除算に使うので0をはじく
 
   if ((time = millis()) - holdTime > cycle)holdTime = time;
   byte referenceX = (time - holdTime) * 255 / cycle;                    //0から255までcycleに応じて上昇
@@ -101,6 +101,7 @@ void LedController::showRainbow(int cycle, int ledGroups, bool direction = 1, by
 }
 
 void LedController::showSameRainbow(int cycle, byte saturation = 200) {
+  if (ledGroups == 0)return;
   if ((time = millis()) - holdTime > cycle)holdTime = time;
   byte x = (time - holdTime) * 255 / cycle;
   uint32_t rgb = hsv(x, saturation);
@@ -110,6 +111,7 @@ void LedController::showSameRainbow(int cycle, byte saturation = 200) {
 }
 
 void LedController::showFlowing(int cycle, uint32_t color, byte fillLedNum) {
+  if (ledGroups == 0)return;
   if ((time = millis()) - holdTime > cycle)holdTime = time;
   int index = (time - holdTime) * (ledNum + fillLedNum) / cycle;
   pixel->setPixelColor(index - 1 - fillLedNum, 0);
