@@ -4,9 +4,7 @@
 #include <Wire.h>
 
 #include "SerialLedController.h"
-LedController led(13, 100, 3000, 50, 40);
-
-//遅延約0.7ms/led(ledGroupsの大きさに依存)
+LedController led(13, 300, 30);
 
 int8_t buf[DATA_SIZE];
 
@@ -18,9 +16,8 @@ void setup() {
 }
 
 void loop() {
-  unsigned long time = micros();
-  led.showWave();
-  Serial.println(micros() - time);
+  led.showWave(1000, 10);
+  led.processingTime("\n");
 }
 
 void receiveEvent() {
