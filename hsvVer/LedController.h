@@ -43,7 +43,7 @@ class LedController {
 
 
     /*処理時間表示*/
-    void processingTime(char ln[] = 0) {
+    void processingTime(char ln[] = NULL) {
       static uint32_t lastTime;
       Serial.print(micros() - lastTime);
       Serial.print(ln);
