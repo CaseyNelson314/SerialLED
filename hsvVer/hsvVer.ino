@@ -3,8 +3,8 @@
 
 #include <Wire.h>
 
-#include "SerialLedController.h"
-LedController led(13, 300, 30);
+#include "LedController.h"
+LedController led(13, 30, 30);
 
 int8_t buf[DATA_SIZE];
 
@@ -16,7 +16,7 @@ void setup() {
 }
 
 void loop() {
-  led.showWave(1000, 10);
+  led.showFlowing(1000, 0x9999ff, 2);
   led.processingTime("\n");
 }
 
