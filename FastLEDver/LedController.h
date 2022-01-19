@@ -6,7 +6,7 @@ class LedController {
 
   private:
     CRGB* pixel;
-    byte address;
+    uint32_t holdTime, time;
     int  ledNum; //LED個数
     byte rBrightness = 255, gBrightness = 255, bBrightness = 255;
 
@@ -118,7 +118,7 @@ void LedController::setBBrightness(byte brightness) {
 void LedController::rainbow(int cycle, int ledGroups, bool direction = 1, byte saturation = 200) {
   if (ledGroups == 0)return;                                            //除算に使うので0をはじく
 
-  static uint32_t holdTime, time;
+
   if ((time = millis()) - holdTime > cycle)holdTime = time;
 
   byte referenceX = (time - holdTime) * 256 / cycle;                    //0から255までcycleに応じて上昇
@@ -142,7 +142,7 @@ void LedController::rainbow(int cycle, int ledGroups, bool direction = 1, byte s
 /*
   void LedController::sameRainbow(int cycle, byte saturation = 200) {
   if (cycle == 0)return;
-  static uint32_t holdTime, time;
+
   if ((time = millis()) - holdTime > cycle)holdTime = time;
   byte x = (time - holdTime) * 255 / cycle;
   uint32_t rgb = hsv(x, saturation);
@@ -154,7 +154,7 @@ void LedController::rainbow(int cycle, int ledGroups, bool direction = 1, byte s
 
   void LedController::flowing(int cycle, uint32_t color, byte fillLedNum) {
   if (cycle == 0)return;
-  static uint32_t holdTime, time;
+
   if ((time = millis()) - holdTime > cycle)holdTime = time;
   int index = (time - holdTime) * (ledNum + fillLedNum) / cycle;
   FastLED.setPixelColor(index - 1 - fillLedNum, 0);
@@ -168,7 +168,7 @@ void LedController::rainbow(int cycle, int ledGroups, bool direction = 1, byte s
   void LedController::stopMotion(int cycle, byte whenFlash = 50, byte flashTime = 30, uint32_t colora = 0xff0000, uint32_t colorb = 0xff5100) {
   if (cycle == 0)return;
   if (cycle / 2 - whenFlash < 0)return;
-  static uint32_t holdTime, time;
+
   if ((time = millis()) - holdTime > cycle)holdTime = time;
   int toMacro = (time - holdTime) - cycle / 2;
   int t = cycle / 2 - abs(toMacro);
