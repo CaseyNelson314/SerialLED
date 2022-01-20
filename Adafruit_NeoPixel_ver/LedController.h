@@ -1,8 +1,8 @@
 /*
-        @file   VariableController.ino
-        @brief  変数制御
+        @file   LedController.h
+        @brief  Serial led controller
         @author CaseyNelson314
-        @date   2021/11/22
+        @date   2022/01/20
 */
 
 #pragma once
