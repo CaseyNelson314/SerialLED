@@ -83,7 +83,7 @@ uint32_t LedController::hsv(byte h, byte s) {
 }
 
 void LedController::transformBrightness(uint32_t &rgb) { //展開後,調整,圧縮 誤差±1
-  if (rBrightness == 255 && gBrightness == 255 && bBrightness == 255)return rgb;
+  if (rBrightness == 255 && gBrightness == 255 && bBrightness == 255)return;
   rgb = (((0xff0000 & rgb) >> 16) * rBrightness >> 8) << 16 |
         (((0x00ff00 & rgb) >>  8) * gBrightness >> 8) <<  8 |
         (( 0x0000ff & rgb       ) * bBrightness >> 8);
