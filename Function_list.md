@@ -1,6 +1,4 @@
-# SerialLED
-
-## functions
+# Functions
 
 ### セッター
 - RGB個々の輝度設定
