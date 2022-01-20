@@ -1,7 +1,11 @@
 #include "LedController.h"
-LedController led0(2, 40, 50);
+#include "WaveGenerator.h"
+#include "VariableController.h"
+LedController led0(2, 20, 50);
 LedController led1(3, 20, 50);
 LedController led2(4, 20, 50);
+
+WaveGenerator sin8bit(5000, 1000);
 
 void setup() {
   Serial.begin(115200);
@@ -9,9 +13,9 @@ void setup() {
 }
 
 void loop() {
-  led0.rainbow(500, 40, 0);
-  led1.rainbow(1000, 40);
-  led2.rainbow(2000, 20);
+  sin8bit.Update();
+  led0.flowing(500, 5, 150, 0xff00ff, 0x00ff00);
+  led1.rainbow(sin8bit.GetTriangle(0, -500), 20);
   processingus("\t\n");
 }
 //13,100,50,1000,20:2380us

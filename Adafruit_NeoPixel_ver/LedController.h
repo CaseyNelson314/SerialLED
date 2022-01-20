@@ -1,3 +1,10 @@
+/*
+        @file   VariableController.ino
+        @brief  変数制御
+        @author CaseyNelson314
+        @date   2021/11/22
+*/
+
 #pragma once
 #include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
@@ -26,15 +33,18 @@ class LedController {
     void setBBrightness(byte brightness);
     void updateBrightness(byte brightness);
 
-    /*色相移動 発光パターン非同期 [色相が1周する周期(ms),色相が1周するLEDの数,流れる方向,彩度]*/
-    void rainbow(int cycle, int ledGroups, bool direction = 1, byte saturation = 200); //発光パターン非同期
+    /*色相移動 発光パターン非同期 [色相が1周する周期(ms),色相が1周するLEDの数,彩度]*/
+    void rainbow(int cycle, int ledGroups, byte saturation = 200); //発光パターン非同期
     void sameRainbow(int cycle, byte saturation = 200);                                //発光パターン同期
 
     /*発光移動 [先端から終端まで流れる時間(ms),LEDの色(RGB下位8+8+8bit),流れるLEDのまとまり]*/
-    void flowing(int cycle, uint32_t color, byte fillLedNum);
+    void flowing(int cycle, int ledGroups, byte duty = 100, uint32_t onColor = 0xfffff, uint32_t offColor = 0x000000);
 
     /*フラッシュ[]*/
     void stopMotion(int cycle, byte whenFlash = 50, byte flashTime = 30, uint32_t colora = 0xff0000, uint32_t colorb = 0xff5100);
+
+    /*ランダム点灯*/
+    void randomPixel(int speed);
 
     /*全LED点灯*/
     void fill(byte r, byte g, byte b); //R,G,B
@@ -72,12 +82,11 @@ uint32_t LedController::hsv(byte h, byte s) {
   return (uint32_t)r << 16 | (uint32_t)g << 8 | b;
 }
 
-void LedController::transformBrightness(uint32_t &rgb) { //展開後,圧縮,結合 誤差±1
+void LedController::transformBrightness(uint32_t &rgb) { //展開後,調整,圧縮 誤差±1
   if (rBrightness == 255 && gBrightness == 255 && bBrightness == 255)return rgb;
   rgb = (((0xff0000 & rgb) >> 16) * rBrightness >> 8) << 16 |
-        (((0x00ff00 & rgb) >>  8) * gBrightness >> 8) << 8 |
+        (((0x00ff00 & rgb) >>  8) * gBrightness >> 8) <<  8 |
         (( 0x0000ff & rgb       ) * bBrightness >> 8);
-  //  rgb = (uint32_t)r << 16 | (uint32_t)g << 8 | b;
 }
 
 
@@ -97,9 +106,12 @@ void LedController::setBBrightness(byte brightness) {
 
 
 /*output functions*/
-void LedController::rainbow(int cycle, int ledGroups, bool direction = 1, byte saturation = 200) {
+void LedController::rainbow(int cycle, int ledGroups, byte saturation = 200) {
   if (ledGroups == 0 || ledGroups == 0)return;                                        //除算に使うので0をはじく
 
+  int numSign = (cycle > 0) ? 1 : -1;
+
+  cycle = abs(cycle);
   if ((time = millis()) - holdTime > cycle)holdTime = time;
 
   byte referenceX = (time - holdTime) * 256 / cycle;                    //0から255までcycleに応じて上昇
@@ -108,10 +120,9 @@ void LedController::rainbow(int cycle, int ledGroups, bool direction = 1, byte s
   for (uint16_t j = 0; j < ledGroups; j++) {                            //同じ光り方をするLEDの処理一括化
     if (j >= ledNum)break;                                              //led数よりledGroupsが多い場合は処理不要 byte型によって負の数になった時にオーバーフロー
 
-    byte x = referenceX - (direction ? 1 : -1) * (j * 256 / ledGroups); //LEDごとに色相をずらし流れる様に directionで加算or減算設定
+    byte x = referenceX -  numSign * (j * 256 / ledGroups); //LEDごとに色相をずらし流れる様に directionで加算or減算設定
     uint32_t rgb = hsv(x, saturation);                                  //色相環からRGB取得
-    transformBrightness(rgb);                                     //最高輝度を変更
-
+    transformBrightness(rgb);                                           //最高輝度を変更
     for (byte i = 0; i <= ledPerGroups; i++)                            //同じ光り方のLEDのグループ数ループ 無い場合は1ループ
       if (j + ledGroups * i < ledNum)
         pixel->setPixelColor(j + ledGroups * i, rgb);
@@ -133,17 +144,35 @@ void LedController::sameRainbow(int cycle, byte saturation = 200) {
   pixel->show();
 }
 
-void LedController::flowing(int cycle, uint32_t color, byte fillLedNum) {
-  if (cycle == 0)return;
+void LedController::flowing(int cycle, int ledGroups, byte duty = 100, uint32_t onColor = 0xfffff, uint32_t offColor = 0x000000) {
+  if (cycle == 0 || ledGroups == 0)return;
 
+  int numSign = (cycle > 0) ? 1 : -1;
+
+  cycle = abs(cycle);
+
+  byte ledPerGroups = ledNum / ledGroups;
   if ((time = millis()) - holdTime > cycle)holdTime = time;
-  int index = (time - holdTime) * (ledNum + fillLedNum) / cycle;
-  pixel->setPixelColor(index - 1 - fillLedNum, 0);
-  transformBrightness(color);
-  for (int i = 0; i < fillLedNum; i++)
-    if (index - i >= 0)
-      pixel->setPixelColor(index - i, color);
+  byte x = (time - holdTime) * 255 / cycle;
+  byte xSum = 255 / ledGroups;
+  uint32_t outputRgb;
+  for (int j = 0; j < ledGroups; j++) {
+    if ((x -= numSign * xSum) < duty)
+      outputRgb = onColor;
+    else
+      outputRgb = offColor;
+
+    for (byte i = 0; i < ledPerGroups; i++)
+      if (j + ledGroups * i < ledNum)
+        pixel->setPixelColor(j + ledGroups * i, outputRgb);
+      else
+        break;
+  }
   pixel->show();
+}
+
+void LedController::randomPixel(int speed) {
+
 }
 
 void LedController::stopMotion(int cycle, byte whenFlash = 50, byte flashTime = 30, uint32_t colora = 0xff0000, uint32_t colorb = 0xff5100) {
