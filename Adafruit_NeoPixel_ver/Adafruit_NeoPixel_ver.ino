@@ -9,6 +9,6 @@ void setup() {
 
 void loop() {
   led0.flowing(500, 5, 150, 0xff00ff, 0x00ff00);
-  led1.rainbow(sin8bit.GetTriangle(0, -500), 20);
+  led1.rainbow(1000, 20);
   processingus("\t\n");
 }
