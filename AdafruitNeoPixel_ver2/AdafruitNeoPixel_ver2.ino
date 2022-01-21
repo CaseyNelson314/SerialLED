@@ -17,7 +17,7 @@ void setup() {
 }
 
 void loop() {
-  led0.flowing(-1000, 10);
-  led1.randomPixel(30);
+  led0.flowing(300,  5, 150, 0xffffff, 0xff00ff);
+  led1.stopMotion(1000);
   processingus("\t\n");
 }
