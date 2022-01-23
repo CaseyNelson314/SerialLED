@@ -107,7 +107,7 @@ void LedController::setBBrightness(byte brightness) {
 
 /*output functions*/
 void LedController::rainbow(int cycle, int ledGroups, byte saturation = 200) {
-  if (ledGroups == 0 || ledGroups == 0)return;                          //除算に使うので0をはじく
+  if (cycle == 0 || ledGroups == 0)return;                          //除算に使うので0をはじく
 
   int cycleSign = (cycle > 0) ? 1 : -1;
 
