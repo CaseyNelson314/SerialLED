@@ -3,7 +3,7 @@ Serial LED control
 
 - millis関数を基に出力しているので遅延がある場合でも周期通り出力できます
 
-- 8bitマイコン用で使う想定なので、なるべく処理速度を上げています(Arduino nano, 20LED, rainbow関数使用時で約1200μs)
+- 8bitマイコン用で使う想定なので、処理を軽くしてます(Arduino nano, 20LED, rainbow関数使用時で約1200μs)
 
 # Constructor
 
