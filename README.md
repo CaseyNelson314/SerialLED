@@ -1,15 +1,62 @@
 # SerialLED
 Serial LED control
 
-- millis関数を基に出力しているので遅延がある場合でも周期通り出力できます
+- Output is based on the millis function, so even if there is a delay, the output is periodic.
 
-- 8bitマイコン用で使う想定なので、処理を軽くしてます(Arduino nano, 20LED, rainbow関数使用時で約1200μs)
+- The processing is light because it is designed to be used for 8-bit microcontrollers
 
-# Constructor
+  (Arduino nano, 20 LEDs, 1200μs when using rainbow function).
 
-オブジェクトを複数生成することでパラレル出力できます
+# Functions
+### Constructor
 
-```
-LedController leds(ADDRESS, LED_NUM, BRIGHTNESS);
-LedController leds(信号ピン, LED数, 最高輝度);
-```
+`LedController leds(addressPin, ledNum, brightness);`
+
+### Setter
+- Overall brightness setting
+
+  `updateBrightness(byte brightness);`
+
+- Brightness setting for each color
+
+  `setRBrightness(byte brightness);`
+
+  `setGBrightness(byte brightness);`
+
+  `setBBrightness(byte brightness);`
+
+
+### Output
+- Rainbow
+
+  `rainbow(int cycle, int ledGroups, byte saturation = 200);`
+
+- Same rainbow
+
+  `sameRainbow(int cycle, byte saturation = 200);`
+
+- Flowing
+
+  `void flowing(cycle, ledGroups, duty = 100, onColor = 0xfffff, offColor = 0x000000);`
+
+- StopMotion
+
+  `stopMotion(cycle, whenFlash = 50, flashTime = 30, colora = 0xff0000, colorb = 0xff5100);`
+
+- Fill
+
+  `fill(r, g, b);``fill(rgb);`
+
+- Clear
+
+  `clear();`
+
+### Else
+- HSV->RGB(no Value)
+
+  `hsv(h, s);`
+
+- Display of processing speed
+
+  `processingus(char ln[] = NULL);`
+
