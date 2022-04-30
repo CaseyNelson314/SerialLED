@@ -1,11 +1,11 @@
 # SerialLED
 ## Serial LED controler
+  
+- Adafruit_NeoPixelライブラリが必要です.
 
-- Output is based on the millis function, so even if there is a delay, the output is periodic.
+- 出力はmillis関数に基づくため、遅延があっても周期的に出力されます.
 
-- The processing is light because it is designed to be used for 8-bit microcontrollers
-
-  (Arduino nano, 20 LEDs, 1000μs when using rainbow function).
+- 8bitマイコンでの使用を前提に最適化しています.
 
 ## Functions
 ### Constructor
@@ -34,4 +34,4 @@
 
 ## Else
 
-Adafruit_NeoPixelクラスを継承しており内部の関数も使用できます
+Adafruit_NeoPixelクラスを継承しているため、内部の関数も使用できます
