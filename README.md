@@ -1,5 +1,5 @@
 # SerialLED
-Serial LED control
+## Serial LED controler
 
 - Output is based on the millis function, so even if there is a delay, the output is periodic.
 
@@ -7,13 +7,13 @@ Serial LED control
 
   (Arduino nano, 20 LEDs, 1000μs when using rainbow function).
 
-# Functions
+## Functions
 ### Constructor
 
   `SerialLedController(pin, ledNum, brightness = 50);` data pin , led num , max brightness
 
 ### Setter
-- Overall brightness setting
+- all brightness setting
 
   `setBrightness(brightness);`
 
@@ -32,3 +32,6 @@ Serial LED control
 
   `showRainbow(cycle, ledsOfHue);` cycle , how many LEDs in one hue ring
 
+## Else
+
+Adafruit_NeoPixelクラスを継承しており内部の関数も使用できます
