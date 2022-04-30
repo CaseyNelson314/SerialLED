@@ -5,58 +5,30 @@ Serial LED control
 
 - The processing is light because it is designed to be used for 8-bit microcontrollers
 
-  (Arduino nano, 20 LEDs, 1200μs when using rainbow function).
+  (Arduino nano, 20 LEDs, 1000μs when using rainbow function).
 
 # Functions
 ### Constructor
 
-`LedController leds(addressPin, ledNum, brightness);`
+  `SerialLedController(pin, ledNum, brightness = 50);` data pin , led num , max brightness
 
 ### Setter
 - Overall brightness setting
 
-  `updateBrightness(byte brightness);`
+  `setBrightness(brightness);`
 
 - Brightness setting for each color
 
-  `setRBrightness(byte brightness);`
+  `setRBrightness(brightness);`
 
-  `setGBrightness(byte brightness);`
+  `setGBrightness(brightness);`
 
-  `setBBrightness(byte brightness);`
+  `setBBrightness(brightness);`
 
 
 ### Output
+
 - Rainbow
 
-  `rainbow(int cycle, int ledGroups, byte saturation = 200);`
-
-- Same rainbow
-
-  `sameRainbow(int cycle, byte saturation = 200);`
-
-- Flowing
-
-  `void flowing(cycle, ledGroups, duty = 100, onColor = 0xfffff, offColor = 0x000000);`
-
-- StopMotion
-
-  `stopMotion(cycle, whenFlash = 50, flashTime = 30, colora = 0xff0000, colorb = 0xff5100);`
-
-- Fill
-
-  `fill(r, g, b);``fill(rgb);`
-
-- Clear
-
-  `clear();`
-
-### Else
-- HSV->RGB(no Value)
-
-  `hsv(h, s);`
-
-- Display of processing speed
-
-  `processingus(char ln[] = NULL);`
+  `showRainbow(cycle, ledsOfHue);` cycle , how many LEDs in one hue ring
 
