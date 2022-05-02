@@ -1,17 +1,17 @@
 #include "SerialLedController.h"
 
-SerialLedController pixel(4, 100);
+SerialLedController pixel(4, 20);
 
 void processingus(String code = "");
 
 void setup() {
   Serial.begin(115200);
-  pixel.setRBrightness(200);
-  pixel.setGBrightness(200);
+  pixel.setBBrightness(0);
+  pixel.setGBrightness(0);
 }
 
 void loop() {
-  pixel.showRainbow(3000, 100);
+  pixel.showRainbow(1000, 50);
   processingus("\n");
 }
 
