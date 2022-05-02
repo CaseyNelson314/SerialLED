@@ -13,7 +13,7 @@ class SerialLedController : public Adafruit_NeoPixel {
 
     uint8_t rBrightness, gBrightness, bBrightness;
     uint32_t holdTime;
-    uint16_t framelate;
+
   public:
 
     SerialLedController(uint8_t pin, uint16_t ledNum, uint8_t brightness = 50);
@@ -23,10 +23,6 @@ class SerialLedController : public Adafruit_NeoPixel {
     void setRBrightness(uint8_t brightness);
     void setGBrightness(uint8_t brightness);
     void setBBrightness(uint8_t brightness);
-
-    void fps(uint16_t framelate) {
-      this->framelate = framelate;
-    }
 
     void showRainbow(int16_t cycle, uint8_t ledsOfHue);
 
