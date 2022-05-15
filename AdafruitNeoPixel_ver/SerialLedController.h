@@ -84,7 +84,7 @@ void SerialLedController::showRainbow(int16_t cycle, uint8_t ledsOfHue) {
     if (j >= numPixels())break;
 
     uint8_t heu = referenceHeu - j * hueShift;            //色相値計算&脳筋キャスト
-    uint32_t rgb = hsv2rgb(heu, 2);                       //RGB値に変換
+    uint32_t rgb = hsv2rgb(heu, 200);                       //RGB値に変換
     transformBrightness(rgb);
 
     for (uint8_t i = 0; i <= sameColorLeds; i++) {        //同色LEDの処理まとめる
