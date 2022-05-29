@@ -15,7 +15,7 @@ void loop() {
   processingus("\n");
 }
 
-void processingus(String code) {
+void processingus(const String &code) {
   static uint32_t holdTime;
   Serial.print(micros() - holdTime);
   Serial.print(code);
